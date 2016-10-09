@@ -5,9 +5,10 @@ CONFIG -= qt
 
 SOURCES += \
     src/main.cpp \
-    src/dictionary.cpp
+    src/dictionary.cpp \
+    src/parser.cpp
 
 HEADERS += \
     inc/dictionary.h \
     inc/error.h \
-    src/error.h
+    inc/parser.h
