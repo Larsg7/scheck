@@ -27,7 +27,7 @@ int main ( int argc, char * argv[] )
 {
     try
     {
-        cout << "scheck version 0.3" << endl;
+        cout << "scheck version 0.4" << endl;
         Dictionary d ( "../data/wordlist" );
 
         std::ifstream sub ( "../data/sub1.dat" );
@@ -43,15 +43,15 @@ int main ( int argc, char * argv[] )
 
         while ( ( word = p.getNextWord() ) != "" )
         {
-        if ( d.Check( word ) )
-        {
-            // cout << word << " is OK\n";
-        }
-        else
-        {
-            cout << "Line "          << p.getLineNum()     << ": \"" << word
-                 << "\" is misspelt: " << p.getCurrentLine() << endl;;
-        }
+            if ( d.Check( word ) )
+            {
+                // cout << word << " is OK\n";
+            }
+            else
+            {
+                cout << "Line "          << p.getLineNum()     << ": \"" << word
+                     << "\" is misspelt: " << p.getCurrentLine() << endl;;
+            }
         }
     }
     catch ( const Error & e )

@@ -1,3 +1,8 @@
+/**
+ * implementation of the class dictionary used to hold a wordlist and
+ * check whether a word is written correctly
+ */
+
 #include <fstream>
 #include <string>
 #include <iostream>
@@ -5,6 +10,9 @@
 #include "inc/error.h"
 #include "inc/dictionary.h"
 
+/**
+ * @brief important: the wordlist has to contain one word per line!
+ */
 Dictionary::Dictionary ( const std::string & fname )
 {
     std::ifstream is ( fname );

@@ -6,27 +6,30 @@
 using std::istream;
 using std::string;
 
+/**
+ * initialises submission and lineNum
+ */
 Parser::Parser ( istream & is )
-    : submission ( is ), lineNum (0)
+    : submission ( is ), lineNum ( 0 )
 {
-
 }
+
 
 string Parser::getNextWord ()
 {
     string word;
 
-    if ( currentLineIst >> word )
+    if ( currentLineIst >> word )       // check if we can read from current line
     {
         return word;
     }
-    else if ( currentLineIst.eof() )
+    else if ( currentLineIst.eof() )    // are we at the end of current line?
     {
-        if ( readNextLine() )
+        if ( readNextLine() )           // is there a next line to be read?
         {
-            return getNextWord();
+            return getNextWord();       // try getting a new word
         }
-        else
+        else                            // we have reached the end of the file
         {
             return "";
         }
@@ -38,9 +41,10 @@ string Parser::getNextWord ()
 
 }
 
+
 bool Parser::readNextLine ()
 {
-    if ( getline( submission, currentLineStr ) )
+    if ( getline( submission, currentLineStr ) ) // is there a new line to be read?
     {
         currentLineIst.clear();
         currentLineIst.str( currentLineStr );

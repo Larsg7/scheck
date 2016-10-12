@@ -4,6 +4,9 @@
 #include <stdexcept>
 #include <string>
 
+/**
+ * @brief The Error class for this project. Is used to throw errors.
+ */
 class Error : public std::runtime_error
 {
 public:
