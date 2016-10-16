@@ -28,6 +28,11 @@ public:
      */
     std::string getNextWord ();
 
+    // getters
+    std::string getCurrentLine () const;
+    unsigned int getLineNum () const;
+
+private:
     /**
      * @brief Parser::readNextLine reads the next line in submission and saves it
      *          to currentLineStr and currentLineIst
@@ -35,28 +40,27 @@ public:
      */
     bool readNextLine ();
 
-    // getters
-    std::string getCurrentLine () const;
-    unsigned int getLineNum () const;
-
-private:
-
     /**
-     * @brief takes a string and attemps to "make" a word -> e.g. removes any
-     *          trailing ,,",',. etc.
-     * @param word the word to be checked
-     * @return if successful returns the to be checked word, if not returns
-     *          an empty string
+     * @brief returns the next character in submission while taking care of line
+     *          numbers and current line
+     * @return the next character in submission
      */
-    std::string makeWord ( const std::string & word );
+    char getNextChar ();
     // current line number
     unsigned int lineNum;
+    // pos in line
+    unsigned int pos;
     // string of current line
     std::string currentLineStr;
     // stringstream of current line
     std::istringstream currentLineIst;
     // inputstream of complete submission (points to is)
     std::istream & submission;
+    // states a word can be in
+    enum State { stInSpace, stInWord, stInNum };
+    // the actual state the current word is in
+    State state;
+
 };
 
 #endif // PARSER_H

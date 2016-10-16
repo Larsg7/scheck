@@ -10,7 +10,8 @@ using std::string;
  * initialises submission and lineNum
  */
 Parser::Parser ( istream & is )
-    : submission ( is ), lineNum ( 0 )
+    : submission ( is ), lineNum ( 0 ),
+      pos ( 0 ), state ( stInSpace )
 {
 }
 
@@ -19,35 +20,75 @@ string Parser::getNextWord ()
 {
     string word;
 
-    if ( currentLineIst >> word )       // check if we can read from current line
+    while ( char c = getNextChar() )
     {
-        return word;
-    }
-    else if ( currentLineIst.eof() )    // are we at the end of current line?
-    {
-        if ( readNextLine() )           // is there a next line to be read?
-        {
-            return getNextWord();       // try getting a new word
+        switch ( state ) {
+        case stInSpace:
+            if ( std::isalpha( c ) )
+            {
+                word += c;
+                state = stInWord;
+            }
+            else if ( std::isdigit( c ) )
+            {
+                state = stInNum;
+            }
+            break;
+        case stInWord:
+            if ( std::isalpha( c ) || c == '\'' )
+            {
+                word += c;
+            }
+            else if ( std::isdigit( c ) )
+            {
+                state = stInNum;
+            }
+            else
+            {
+                state = stInSpace;
+                return word;
+            }
+            break;
+         case stInNum:
+            if ( std::isalnum( c ) || c == '\'' )
+            {
+                word += c;
+            }
+            else
+            {
+                state = stInSpace;
+                word = "";
+            }
+            break;
+        default:
+            throw Error ( "character is in bad state" );
+            break;
         }
-        else                            // we have reached the end of the file
-        {
-            return "";
-        }
     }
-    else
-    {
-        throw Error ( "Read error" );
-    }
+    return word;
 
 }
 
+char Parser::getNextChar ()
+{
+    if ( pos >= currentLineStr.size() )
+    {
+        if ( ! readNextLine() )
+        {
+            return 0;
+        }
+    }
+    return currentLineStr[ pos++ ];
+}
 
 bool Parser::readNextLine ()
 {
     if ( getline( submission, currentLineStr ) ) // is there a new line to be read?
     {
+        pos = 0;
         currentLineIst.clear();
         currentLineIst.str( currentLineStr );
+        currentLineStr += " ";
         lineNum++;
         return true;
     }
